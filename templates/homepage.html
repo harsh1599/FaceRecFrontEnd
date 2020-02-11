@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Blockchain Lab</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style type="text/css">
+
+      body{
+        background-image: url("../static/bg1.jpg");
+      }
+
+    .vjtilogo{
+      height:210px;
+      margin-right:10px;
+      float:right;
+      margin-top:10px;
+    }
+		#enroll{
+			padding: 10px 50px;
+			display: block;
+			margin-left: 40%;
+			margin-top: 20px;
+		}
+
+		.jumbotron{
+			margin-top: 175px;
+			text-align: center;
+		}
+
+		.prevlogged{
+			float: right;
+			margin-top: 100px;
+			margin-right: 25px;
+		}
+
+    </style>
+  </head>
+  <body>
+    <img src = "../static/vjti.png" class = "vjtilogo">
+    <h1 class="jumbotron">Welcome to BlockChain Lab
+
+    <a href = "{{url_for('enroll_page')}}"><button type="button" name="button" value="Enroll" class="btn btn-success" id="enroll">Enroll</button></a>
+    </h1>
+    <button type="button" name="prevlogged" class="btn btn-info prevlogged" id = "show">View Previous Logged In people...
+    </button>
+    <a href = "{{url_for('identify_page')}}" ><button type="button" name="prevlogged" class="btn btn-info prevlogged" id = "start_recording">Start Recording</button></a>
+    <form action = "/logpage" id = "logform" style="display:none">
+      <input type = "text" placeholder="Start Date" name = 'start_date'>
+      <input type = "text" placeholder="End Date", name = 'end_date'>
+      <input type = "submit" value = "Submit">
+    </form>
+	<script type="text/javascript" src="../static/Logpage.js"></script>
+  </body>
+</html>
