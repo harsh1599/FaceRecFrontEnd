@@ -1,0 +1,5 @@
+Flask
+Flask_SQLAlchemy
+Migrate
+datetime
+opencv
