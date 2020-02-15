@@ -30,7 +30,7 @@ buttonRecord.onclick =async function() {
         xhr.send(JSON.stringify({ status: "true" }));
         isRecording=true;
     }
-    await sleep(10000);
+    await sleep(6000);
     sub.disabled = false;
     // XMLHttpRequest
     recdiv.style.background='black';

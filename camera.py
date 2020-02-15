@@ -14,10 +14,11 @@ class RecordingThread (threading.Thread):
         counter = 1 ;
         while self.isRunning:
             ret, frame = self.cap.read()
-            if(self.identify==0):
+            #if(self.identify==1):
+            if(counter<=10):
                 cv2.imwrite('image'+str(counter)+'.png',frame)
-            else :
-                cv2.imwrite('./identified/image'+str(counter)+'.png',frame)
+            #else :
+                #cv2.imwrite('image'+str(counter)+'.png',frame)
             if(ret):
                 self.out.write(frame)
             time.sleep(0.5)
