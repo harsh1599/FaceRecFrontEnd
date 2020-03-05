@@ -84,7 +84,7 @@ def train(train_dir, model_save_path=None, n_neighbors=None, knn_algo='ball_tree
     for class_dir in os.listdir(train_dir):
         if not os.path.isdir(os.path.join(train_dir, class_dir)):
             continue
-        print(str(ctr/total_no*100)+' percent is done ')
+        #print(str(ctr/total_no*100)+' percent is done ')
         # Loop through each training image for the current person
         for img_path in image_files_in_folder(os.path.join(train_dir, class_dir)):
             image = face_recognition.load_image_file(img_path)
@@ -329,7 +329,7 @@ def recognize(video_capture,shape_predictor,face_detector,face_recognition_model
         print('welcome to the blockchain lab'+lts) 
 
         if(len(lts)!=0):
-            ps = subprocess.Popen(['python', 'speak.py', 'Welcome to the Blockchain Lab '+ lts], stdout=subprocess.PIPE)
+            ps = subprocess.Popen(['python3', 'speak.py', 'Welcome to the Blockchain Lab '+ lts], stdout=subprocess.PIPE)
     # Display the resulting image
         cv2.imshow('Video', gray)
 
@@ -344,7 +344,7 @@ if __name__ == "__main__":
     # STEP 1: Train the KNN classifier and save it to disk
     # Once the model is trained and saved, you can skip this step next time.
     print("Training KNN classifier...")
-    #classifier = train("knn_examples/train", model_save_path="trained_knn_model.clf", n_neighbors=3) #Model is here
+    classifier = train("knn_examples/train", model_save_path="trained_knn_model.clf", n_neighbors=3) #Model is here
     print("Training complete!")
     shape_predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
     face_recognition_model = dlib.face_recognition_model_v1('dlib_face_recognition_resnet_model_v1.dat')

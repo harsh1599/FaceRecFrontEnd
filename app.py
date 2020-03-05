@@ -60,7 +60,6 @@ class User(db.Model):
     def __repr__(self):
         return f"{self.id}, {self.time_stamp}, {self.first_name} {self.last_name}"
 
-
 class Log(db.Model):
 
     __tablename__ = 'logs'
@@ -77,8 +76,7 @@ class Log(db.Model):
         self.time_stamp=time.time()
 
     def __repr__(self):
-        return f"{self.id},{self.time_stamp}, {self.first_name} {self.last_name}"
-
+        return f"{self.id}, {self.time_stamp}, {self.first_name} {self.last_name}"
 
 db.create_all() 
 
@@ -136,7 +134,6 @@ def flush_set():
     print("Flushed")
     print(set_old)
 
-
 @app.route('/')
 def home_page():
     return render_template('homepage.html')
@@ -165,20 +162,26 @@ def start_detecting():
     if(video_capture==None):
         video_capture = VideoCamera()
     
-    schedule.every(0.3).minutes.do(flush_set)
+    schedule.every(2).minutes.do(flush_set)
+    
     global set_old
+    
     while val==True:
-
+        
+        
         schedule.run_pending()
-
+        start= time.time()
         ret, frame = video_capture.cap.read()
         rgb_frame =frame[:, :, ::-1] 
         
 
-        print("Frame taken")
+        print("Frame taken, processsing")
+        
 
         detected_faces = face_detector(rgb_frame, 1)
+        
         face_locations = face_recognition.face_locations(rgb_frame)
+
 
         predictions = predict(frame, model_path="trained_knn_model.clf")
         print(predictions)
@@ -192,23 +195,34 @@ def start_detecting():
             #engine.say('welcome to the blockchain lab'+name)
             #engine.runAndWait()
             set_new.add(name)
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            font = cv2.FONT_HERSHEY_DUPLEX
+            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
 
         # print("Old and new sets")
         # print(set_old)
         # print(set_new)
         temp = set_new.difference(set_old)
+        #temp = set_new.intersection(set_old)
         # print(temp)
         new_temp = list(temp)
         print("Final list")
         print(new_temp)
         lts=' and '.join(map(str,new_temp))
-        set_old = set_new
+        set_old = set_old | set_new
         #### SPEAKING CODE
         if(len(new_temp)!=0):
-            ps = subprocess.Popen(['python', 'speak.py', 'Welcome to the Blockchain Lab '+ lts], stdout=subprocess.PIPE)
+            ps = subprocess.Popen(['python3', 'speak.py', 'Welcome to the Blockchain Lab '+ lts], stdout=subprocess.PIPE)
+            print("Speaking the following name/s")            
+            print(lts)
+            
             for name in new_temp: 
                 if name == "unknown":
-                    name = "unknown person"               
+                    name = "unknown person"
+                    ps = subprocess.Popen(['python3', 'speak.py', 'Please enrollyourself with the system'], stdout=subprocess.PIPE)
+		     
+		         
                 complete_name=name.split(' ')
 
                 user=Log(first_name=complete_name[0],last_name=complete_name[1])
@@ -221,7 +235,7 @@ def start_detecting():
 
 
         # Display the resulting image
-        #cv2.imshow('Video', rgb_frame)
+        #cv2.imshow('Video', frame)
 
         # Hit 'q' on the keyboard to quit!
         if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -36,7 +36,8 @@ class VideoCamera(object):
     def __init__(self):
         # Open a camera
         self.cap = cv2.VideoCapture(0)
-      
+        self.cap.set(cv2.CAP_PROP_FPS, 1)
+      	
         # Initialize video recording environment
         self.is_record = False
         self.out = None
@@ -48,6 +49,7 @@ class VideoCamera(object):
         self.cap.release()
     
     def get_frame(self):
+        print(self.cap.get(cv2.CAP_PROP_FPS))
         ret, frame = self.cap.read()
 
         frame = cv2.flip(frame,1)
